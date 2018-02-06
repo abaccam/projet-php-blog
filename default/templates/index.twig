@@ -26,14 +26,19 @@
         </style>
     </head>
     <body>
-        <p>
-            <?php
-                if ($is_logged){
-                    echo "Welcome " . $email . " !";
-                } else {
-                    echo "Wrong email or password !";
-                }
-            ?>
-        </p>
+        <h1>Slim</h1>
+        <div>a microframework for PHP</div>
+        {% if args['name'] is defined %}
+          <h2>Hello {{ args['name']|escape }} !</h2>
+        {% else %}
+          <p>Try <a href="http://www.slimframework.com">SlimFramework</a></p>
+        {% endif %}
+
+        <form action="{{path_for('login')}}" method="post">
+            <input type="email" name="email">
+            <input type="password" name="password">
+            <input type="submit" value="Submit">
+            
+        </form>
     </body>
 </html>

@@ -5,19 +5,24 @@ use Slim\Http\Response;
 
 // Routes
 
-$app->get('/', function (Request $request, Response $response, array $args) {
+$app->map(['GET', 'POST'], '/login', function (Request $request, Response $response, array $args) {
+    // Sample log message
+    $this->logger->info("Slim-Skeleton '/' route");
+    $body = $request->getParsedBody();
+    $body['isLogged'] = ($body['email'] === 'toto@gmail.com' && $body['password'] === 'pass');
+
+    // Render index view
+    return $this->view->render($response, 'login.twig', [
+        'body' => $body
+    ]);
+})->setName('login');
+
+$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
 
     // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
-
-$app->post('/login', function (Request $request, Response $response, array $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/login' route");
-
-    $body = $request->getParsedBody();
-    $body['is_logged'] = ($body['email'] === "toto@gmail.com" && $body['password'] === "pass");
-    return $this->renderer->render($response, 'login.phtml', $body);
-});
+    return $this->view->render($response, 'index.twig', [
+        'args' => $args
+    ]);
+})->setName('index');
